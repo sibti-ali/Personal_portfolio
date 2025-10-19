@@ -22,7 +22,7 @@ export default function Timeline() {
       period: '2019 - 2023',
       type: 'education',
       description: 'Started Bachelor of Science in Computer Science with focus on software engineering, algorithms, and web technologies.',
-      skills: ['Data Structures', 'Algorithms', 'Software Engineering', 'Databases', 'Web Development', 'Embedded Systems']
+      skills: ['Data Structures & Algorithms', 'Databases', 'Web Development', 'Embedded Systems', 'AI']
     },
     {
       id: 'internship',
@@ -40,7 +40,7 @@ export default function Timeline() {
       period: '2023',
       type: 'education',
       description: 'Graduated with the highest achievable grade (1:1) with the Mark Humphry\'s Memorial Prize for Outstanding Achievement During Placement Year.',
-      skills: ['Award', '1:1']
+      skills: ['Mark Humphry\'s Memorial Prize', 'First(1:1)']
     },
     {
       id: 'developer',
