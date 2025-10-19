@@ -65,13 +65,15 @@ export default function Timeline() {
   };
 
   const isNodeExpanded = (nodeId: string) => {
-    return hoveredNode === nodeId || clickedNode === nodeId;
+    if (clickedNode) return clickedNode === nodeId;
+    return hoveredNode === nodeId;
   };
 
   const handleCardClick = (nodeId: string) => {
+    setHoveredNode(null);
     setClickedNode(clickedNode === nodeId ? null : nodeId);
-    
   };
+
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4">
