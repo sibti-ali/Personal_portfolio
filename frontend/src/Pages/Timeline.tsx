@@ -12,6 +12,7 @@ interface TimelineNode {
 
 export default function Timeline() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [clickedNode, setClickedNode] = useState<string | null>(null);
 
   const nodes: TimelineNode[] = [
     {
@@ -25,7 +26,7 @@ export default function Timeline() {
     },
     {
       id: 'internship',
-      title: 'Placement year',
+      title: 'Placement Year',
       organization: 'Axia Digital',
       period: '2021 - 2022',
       type: 'work',
@@ -38,7 +39,7 @@ export default function Timeline() {
       organization: 'BSc Computer Science',
       period: '2023',
       type: 'education',
-      description: 'Graduated with a highest achievable grade (1:1) with the Mark Humphry\'s Memorial Prize for Outstanding Achievement During Placement Year',
+      description: 'Graduated with the highest achievable grade (1:1) with the Mark Humphry\'s Memorial Prize for Outstanding Achievement During Placement Year.',
       skills: ['Award', '1:1']
     },
     {
@@ -47,19 +48,29 @@ export default function Timeline() {
       organization: 'Axia Digital',
       period: '2022 - Present',
       type: 'work',
-      description: 'Building enterprise-grade CPD platforms for professionals. Leading development of multiple projects with experience in cloud technologies',
+      description: 'Building enterprise-grade CPD platforms for professionals. Leading development of multiple projects with experience in cloud technologies.',
       skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'MongoDB', 'Docker']
     }
   ];
 
   const getNodePosition = (index: number) => {
-    return index * 150 + 30; // Spacing between nodes
+    return index * 150 + 30;
   };
 
   const borderColor = (node: TimelineNode) => {
-    return hoveredNode === node.id 
+    const isExpanded = hoveredNode === node.id || clickedNode === node.id;
+    return isExpanded
       ? (node.type === 'education' ? 'border-purple-500' : 'border-cyan-500')
       : 'border-slate-700';
+  };
+
+  const isNodeExpanded = (nodeId: string) => {
+    return hoveredNode === nodeId || clickedNode === nodeId;
+  };
+
+  const handleCardClick = (nodeId: string) => {
+    setClickedNode(clickedNode === nodeId ? null : nodeId);
+    
   };
 
   return (
@@ -75,12 +86,24 @@ export default function Timeline() {
 
       <div className="relative" style={{ minHeight: `${nodes.length * 150 + 100}px` }}>
         
-        {/* Connecting line */}
+        {/* Connecting line - Desktop at 50%, Mobile at 20px from left */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+          {/* Desktop line */}
           <line 
+            className="hidden md:block"
             x1="50%" 
             y1={getNodePosition(0) + 20} 
             x2="50%" 
+            y2={getNodePosition(nodes.length - 1) + 20} 
+            stroke="#64748b" 
+            strokeWidth="4" 
+          />
+          {/* Mobile line */}
+          <line 
+            className="md:hidden"
+            x1="20" 
+            y1={getNodePosition(0) + 20} 
+            x2="20" 
             y2={getNodePosition(nodes.length - 1) + 20} 
             stroke="#64748b" 
             strokeWidth="4" 
@@ -95,28 +118,29 @@ export default function Timeline() {
 
             return (
               <div key={node.id}>
-                {/* Card */}
+                {/* Card - Desktop (alternating sides) */}
                 <div 
-                  className="absolute"
+                  className="hidden md:block absolute"
                   style={{
                     top: `${topPosition}px`,
                     left: isLeft ? '50%' : 'auto',
                     right: isLeft ? 'auto' : '50%',
                     marginLeft: isLeft ? '24px' : 'auto',
                     marginRight: isLeft ? 'auto' : '24px',
-                    zIndex: hoveredNode === node.id ? 10 : 2
+                    zIndex: isNodeExpanded(node.id) ? 10 : 2
                   }}
                 >
                   <div 
                     className={`w-80 bg-slate-900 border rounded-lg p-4 transition-all cursor-pointer ${borderColor(node)}`}
                     onMouseEnter={() => setHoveredNode(node.id)}
                     onMouseLeave={() => setHoveredNode(null)}
+                    onClick={() => handleCardClick(node.id)}
                   >
                     <h3 className="text-white font-medium mb-1">{node.title}</h3>
                     <p className="text-slate-400 text-sm mb-0.5">{node.organization}</p>
                     <p className="text-slate-500 text-xs">{node.period}</p>
                     
-                    {hoveredNode === node.id && (
+                    {isNodeExpanded(node.id) && (
                       <div className="mt-3 pt-3 border-t border-slate-800">
                         <p className="text-slate-300 text-sm mb-2">{node.description}</p>
                         <div className="flex flex-wrap gap-1">
@@ -131,7 +155,42 @@ export default function Timeline() {
                   </div>
                 </div>
 
-                {/* Node dot */}
+                {/* Card - Mobile (all on right side) */}
+                <div 
+                  className="md:hidden absolute"
+                  style={{
+                    top: `${topPosition}px`,
+                    left: '44px',
+                    right: '0',
+                    zIndex: isNodeExpanded(node.id) ? 10 : 2
+                  }}
+                >
+                  <div 
+                    className={`bg-slate-900 border rounded-lg p-4 transition-all cursor-pointer ${borderColor(node)}`}
+                    onMouseEnter={() => setHoveredNode(node.id)}
+                    onMouseLeave={() => setHoveredNode(null)}
+                    onClick={() => handleCardClick(node.id)}
+                  >
+                    <h3 className="text-white font-medium mb-1">{node.title}</h3>
+                    <p className="text-slate-400 text-sm mb-0.5">{node.organization}</p>
+                    <p className="text-slate-500 text-xs">{node.period}</p>
+                    
+                    {isNodeExpanded(node.id) && (
+                      <div className="mt-3 pt-3 border-t border-slate-800">
+                        <p className="text-slate-300 text-sm mb-2">{node.description}</p>
+                        <div className="flex flex-wrap gap-1">
+                          {node.skills.map(skill => (
+                            <span key={skill} className="text-xs px-2 py-1 rounded bg-slate-800 text-slate-400">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Node dot - Desktop at center, Mobile at left */}
                 <div 
                   className="absolute"
                   style={{
@@ -141,15 +200,22 @@ export default function Timeline() {
                     zIndex: 3
                   }}
                 >
+                  <div className="hidden md:block w-4 h-4 rounded-full bg-slate-600" />
+                </div>
+                <div 
+                  className="absolute md:hidden"
+                  style={{
+                    top: `${topPosition + 20}px`,
+                    left: '12px',
+                    zIndex: 3
+                  }}
+                >
                   <div className="w-4 h-4 rounded-full bg-slate-600" />
                 </div>
               </div>
             );
           })}
         </div>
-      </div>
-
-      <div className="flex items-center justify-center gap-8 mt-16 pt-8 border-t border-slate-800">
       </div>
     </div>
   );

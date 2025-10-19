@@ -11,7 +11,7 @@ export default function Home() {
 
   const projects = [
     {
-      title: 'E-Assessment Platfroms for Axia Digital',
+      title: 'E-Assessment Platforms for Axia Digital',
       description: 'Designed and developed WebApps. Integrated RBA allowing trainees in professional practice to validate their work.',
       tags: ['XSLT', 'XML', 'C# .NET'],
       link: '#',
@@ -19,7 +19,7 @@ export default function Home() {
     },
     {
       title: 'Mobile App for Axia Digital',
-      description: 'Designed, Developed and Deployed a mobile in use by Partners of the NHS England.',
+      description: 'Designed, Developed and Deployed a mobile app in use by Partners of the NHS England.',
       tags: ['Flutter', 'WebViews'],
       link: '#',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
@@ -32,14 +32,12 @@ export default function Home() {
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     },
     {
-    "id": "task-manager",
-    "title": "Task Manager Application",
-    "description": "Comprehensive task management system for caseworkers featuring an interactive kanban board real-time updates",
-    "tags": ["React", "Express.js", "MongoDB", "Kanban Board", "Real-time Updates"],
-    "link": "#",
-    "gradient": "from-purple-600 via-pink-500 to-rose-400",
-    },
-    
+      title: 'Task Manager Application',
+      description: 'Comprehensive task management system for caseworkers featuring an interactive kanban board with real-time updates.',
+      tags: ['React', 'Express.js', 'MongoDB', 'Kanban Board', 'Real-time Updates'],
+      link: '#',
+      gradient: 'from-purple-600 via-pink-500 to-rose-400'
+    }
   ];
 
   const projectsPerPage = 3;
@@ -47,7 +45,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'journey' ,'skills', 'projects'];
+      const sections = ['home', 'journey', 'skills', 'projects'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -90,7 +88,7 @@ export default function Home() {
   const skills: Record<'frontend' | 'backend' | 'tools', string[]> = {
     frontend: ['React', 'Angular', 'TypeScript', 'Tailwind CSS', 'XSLT/XML', 'HTML/CSS'],
     backend: ['Node.js', 'Express', 'REST APIs', 'SQL', 'Python', 'C#/C++'],
-    tools: ['Git', 'VS Code', 'Postman', 'Unit testing', 'AWS', 'Azure DevOps' , 'Docker']
+    tools: ['Git', 'VS Code', 'Postman', 'Unit testing', 'AWS', 'Azure DevOps', 'Docker']
   };
 
   const visibleProjects = projects.slice(
@@ -145,7 +143,7 @@ export default function Home() {
             
             {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8">
-              {['home', 'journey' , 'skills', 'projects'].map((section) => (
+              {['home', 'journey', 'skills', 'projects'].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
@@ -177,7 +175,7 @@ export default function Home() {
         {isMenuOpen && (
           <div className="md:hidden bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/50">
             <div className="px-4 py-4 space-y-3">
-              {['home', 'journey' , 'skills', 'projects'].map((section) => (
+              {['home', 'journey', 'skills', 'projects'].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
@@ -204,7 +202,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="text-xl sm:text-2xl text-slate-300 mb-4">
-            Simulating the universe, one particle at a time
+            Building enterprise solutions for professional development
           </p>
           <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
             Full Stack Developer specializing in developing enterprise grade web & mobile apps
@@ -224,10 +222,10 @@ export default function Home() {
             </a>
           </div>
           <div className="flex justify-center gap-6">
-            <a target="_github" href="https://github.com/sibti-ali/" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/sibti-ali/" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
               <Github size={24} />
             </a>
-            <a target="_linkedin" href="https://www.linkedin.com/in/sibtain-ali-73ab7a213/" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
+            <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/sibtain-ali-73ab7a213/" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
               <Linkedin size={24} />
             </a>
             <a href="mailto:jsibtainali@gmail.com" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
@@ -238,20 +236,22 @@ export default function Home() {
       </section>
 
       {/* Timeline Section */}
-      <section id="journey" className="py-20 px-4 relative z-10">
-        <Timeline />
+      <section id="journey" className="min-h-screen flex items-center py-20 px-4 relative z-10">
+        <div className="w-full">
+          <Timeline />
+        </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 px-4 relative z-10">
-        <div className="max-w-4xl mx-auto">
+      <section id="skills" className="min-h-screen flex items-center py-20 px-4 relative z-10">
+        <div className="max-w-4xl mx-auto w-full">
           <h2 className="text-4xl font-bold text-center mb-4">
             <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
               Skills & Expertise
             </span>
           </h2>
           <p className="text-center text-slate-400 mb-12 max-w-2xl mx-auto">
-            Technologies I use to build immersive simulations and experiences
+            Technologies I use to build enterprise-grade applications
           </p>
           
           {/* Tab Navigation */}
@@ -324,7 +324,7 @@ export default function Home() {
             </span>
           </h2>
           <p className="text-center text-slate-400 mb-16 max-w-2xl mx-auto">
-            Physics simulations and interactive experiences
+            Enterprise solutions and innovative applications
           </p>
           
           <div className="relative">
@@ -428,7 +428,7 @@ export default function Home() {
             </span>
           </h3>
           <p className="text-slate-400 mb-6">
-            Open to collaborations on physics simulations and interactive projects
+            Open to collaborations on enterprise applications and innovative projects
           </p>
           <a
             href="mailto:jsibtainali@gmail.com"
@@ -437,7 +437,7 @@ export default function Home() {
             Get In Touch
           </a>
           <div className="mt-8 pt-8 border-t border-slate-800/50 text-slate-500">
-            <p>&copy; 2025 Sibtain Ali. Creating Cool stuff.</p>
+            <p>&copy; 2025 Sibtain Ali. Creating cool stuff.</p>
           </div>
         </div>
       </footer>
