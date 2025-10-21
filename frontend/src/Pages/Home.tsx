@@ -303,7 +303,7 @@ export default function Home() {
               {skills[activeTab as keyof typeof skills].map((skill, index) => (
                 <div
                   key={skill}
-                  className="flex items-center p-4 bg-slate-800/50 rounded-lg hover:bg-slate-800 hover:border-cyan-500/50 border border-transparent transition-all group"
+                  className="flex items-center p-2 bg-slate-800/50 rounded-lg hover:bg-slate-800 hover:border-cyan-500/50 border border-transparent transition-all group"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <span className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mr-3 group-hover:shadow-lg group-hover:shadow-cyan-500/50"></span>
