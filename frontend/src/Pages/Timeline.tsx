@@ -17,9 +17,9 @@ export default function Timeline() {
   const nodes: TimelineNode[] = [
     {
       id: 'bsc-start',
-      title: 'BSc Computer Science',
-      organization: 'University',
-      period: '2019 - 2023',
+      title: 'Started my bachelor`s in Computer Science',
+      organization: 'University of Huddersfield',
+      period: '2019',
       type: 'education',
       description: 'Started Bachelor of Science in Computer Science with focus on software engineering, algorithms, and web technologies.',
       skills: ['Data Structures & Algorithms', 'Databases', 'Web Development', 'Embedded Systems', 'AI']
