@@ -209,7 +209,7 @@ export default function Home() {
           </p>
           <div className="flex justify-center gap-4 mb-12">
             <a 
-              href="/assets/Sibtain_Ali.pdf" 
+              href="/Sibtain_Ali.pdf"
               download="Sibtain_Ali_Resume.pdf"
               className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
             >
