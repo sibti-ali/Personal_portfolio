@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Menu, X, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Menu, X, Sparkles, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import Timeline from './Timeline';
 
 export default function Home() {
@@ -106,7 +106,7 @@ export default function Home() {
           style={{
             top: '10%',
             left: '20%',
-            transform: `translate(${mousePosition.x * 0.02}px, ${mousePosition.y * 0.02}px)`
+            transform: `translate(${mousePosition.x * 0.2}px, ${mousePosition.y * 0.2}px)`
           }}
         ></div>
         <div 
@@ -114,7 +114,7 @@ export default function Home() {
           style={{
             bottom: '20%',
             right: '10%',
-            transform: `translate(${mousePosition.x * -0.01}px, ${mousePosition.y * -0.01}px)`
+            transform: `translate(${mousePosition.x * -0.1}px, ${mousePosition.y * -0.1}px)`
           }}
         ></div>
         <div 
@@ -122,7 +122,7 @@ export default function Home() {
           style={{
             top: '50%',
             left: '50%',
-            transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`
+            transform: `translate(${mousePosition.x * 0.15}px, ${mousePosition.y * 0.15}px)`
           }}
         ></div>
         
@@ -209,10 +209,12 @@ export default function Home() {
           </p>
           <div className="flex justify-center gap-4 mb-12">
             <a 
-              href="#projects" 
-              className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
+              href="/assets/Sibtain_Ali.pdf" 
+              download="Sibtain_Ali_Resume.pdf"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
             >
-              View Projects
+              <Download size={20} />
+              Download Resume
             </a>
             <a 
               href="#contact" 
