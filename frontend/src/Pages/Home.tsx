@@ -193,8 +193,8 @@ export default function Home() {
       <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="mb-8 inline-block relative">
-            <div className="w-32 h-32 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 rounded-full mx-auto mb-6 shadow-2xl shadow-cyan-500/50 animate-pulse"></div>
-            <div className="absolute inset-0 w-32 h-32 bg-gradient-to-br from-cyan-500 via-blue-500 to-purple-600 rounded-full mx-auto blur-xl opacity-50"></div>
+            <img src="/me.jpg" className="w-48 h-48 rounded-full mx-auto mb-6 shadow-2xl shadow-cyan-500/50"></img>
+            
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
