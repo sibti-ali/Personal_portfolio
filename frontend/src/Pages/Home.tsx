@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, ExternalLink, Menu, X, Sparkles, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import Timeline from './Timeline';
+import { FluidBackground } from './FluidBackgroud';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -100,34 +101,13 @@ export default function Home() {
     <div className="min-h-screen bg-slate-950 text-white overflow-hidden relative">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient Orbs */}
-        <div 
-          className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
-          style={{
-            top: '10%',
-            left: '20%',
-            transform: `translate(${mousePosition.x * 0.2}px, ${mousePosition.y * 0.2}px)`
-          }}
-        ></div>
-        <div 
-          className="absolute w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
-          style={{
-            bottom: '20%',
-            right: '10%',
-            transform: `translate(${mousePosition.x * -0.1}px, ${mousePosition.y * -0.1}px)`
-          }}
-        ></div>
-        <div 
-          className="absolute w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl"
-          style={{
-            top: '50%',
-            left: '50%',
-            transform: `translate(${mousePosition.x * 0.15}px, ${mousePosition.y * 0.15}px)`
-          }}
-        ></div>
-        
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
+        <div className="w-full">
+          <FluidBackground mousePosition={{
+            x: mousePosition.x,
+            y: mousePosition.y
+          }} />
+        </div>
+        {/* <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:50px_50px]"></div> */}
       </div>
 
       {/* Navbar */}
@@ -192,8 +172,8 @@ export default function Home() {
       {/* Hero Section */}
       <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative">
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="mb-8 inline-block relative">
-            <img src="/me.jpg" className="w-48 h-48 rounded-full mx-auto mb-6 shadow-2xl shadow-cyan-500/50"></img>
+          <div className="mb-4 mt-4 inline-block relative">
+            <img src="/me.jpg" className="w-48 h-48 rounded-full shadow-2xl shadow-cyan-500/50"></img>
             
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
