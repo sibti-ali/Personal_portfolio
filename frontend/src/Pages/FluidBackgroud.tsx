@@ -9,7 +9,7 @@ export function FluidBackground() {
     
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      const newOffset = Math.sin(elapsed * 0.0006) * 80;
+      const newOffset = Math.sin(elapsed * 0.0005) * 80; // Slow sine wave, 80px amplitude
       setOffset(newOffset);
       animationFrame = requestAnimationFrame(animate);
     };

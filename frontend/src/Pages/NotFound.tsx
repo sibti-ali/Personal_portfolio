@@ -20,7 +20,8 @@ export default function NotFound() {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
 
-    const animateParticles = setInterval(() => {
+    let animationFrame: number;
+    const animateParticles = () => {
       setParticles(prev =>
         prev.map(p => ({
           ...p,
@@ -28,12 +29,15 @@ export default function NotFound() {
           y: (p.y + p.vy + 100) % 100,
         }))
       );
-    }, 50);
+      animationFrame = requestAnimationFrame(animateParticles);
+    };
 
+    animationFrame = requestAnimationFrame(animateParticles);
     window.addEventListener('mousemove', handleMouseMove);
+    
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      clearInterval(animateParticles);
+      cancelAnimationFrame(animationFrame);
     };
   }, []);
 

@@ -7,7 +7,6 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>('home');
   const [activeTab, setActiveTab] = useState<'frontend' | 'backend' | 'tools'>('frontend');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [projectIndex, setProjectIndex] = useState(0);
 
   const projects = [
@@ -45,7 +44,7 @@ export default function Home() {
   const totalPages = Math.ceil(projects.length / projectsPerPage);
 
   useEffect(() => {
-    const handleScroll = () => {
+  const handleScroll = () => {
       const sections = ['home', 'journey', 'skills', 'projects'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
@@ -58,15 +57,11 @@ export default function Home() {
       if (current) setActiveSection(current);
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('mousemove', handleMouseMove);
+    // Removed mousemove listener
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
+      // Removed mousemove listener cleanup
     };
   }, []);
 
