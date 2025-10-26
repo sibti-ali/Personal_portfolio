@@ -102,10 +102,7 @@ export default function Home() {
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="w-full">
-          <FluidBackground mousePosition={{
-            x: mousePosition.x,
-            y: mousePosition.y
-          }} />
+          <FluidBackground />
         </div>
         {/* <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:50px_50px]"></div> */}
       </div>
