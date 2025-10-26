@@ -76,7 +76,7 @@ export default function Timeline() {
 
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4">
+    <div className="w-full max-w-6xl mx-auto px-4 ">
       <h2 className="text-4xl font-bold text-center mb-4">
         <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
           Journey

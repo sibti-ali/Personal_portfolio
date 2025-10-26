@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Menu, X, Sparkles, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import Timeline from './Timeline';
 import { FluidBackground } from './FluidBackgroud';
 
@@ -103,13 +103,12 @@ export default function Home() {
       </div>
 
       {/* Navbar */}
-      <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-xl z-50 border-b border-slate-800/50">
+      <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-xl z-50 border-b border-slate-800/50 ">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <a href="" className="text-2xl font-bold flex items-center gap-2">
-              <Sparkles className="text-cyan-400" size={24} />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                SA
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent font-mono">
+                &lt;SA/&gt;
               </span>
             </a>
             
