@@ -49,7 +49,7 @@ export default function Timeline() {
       period: '2022 - Present',
       type: 'work',
       description: 'Building enterprise-grade CPD platforms for professionals. Leading development of multiple projects with experience in cloud technologies.',
-      skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'MongoDB', 'Docker']
+      skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'SQL', 'IIS', 'Docker']
     }
   ];
 

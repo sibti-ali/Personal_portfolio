@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Download, Image } from 'lucide-react';
 import Timeline from './Timeline';
 import { FluidBackground } from './FluidBackgroud';
 
@@ -8,34 +8,32 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [activeTab, setActiveTab] = useState<'frontend' | 'backend' | 'tools'>('frontend');
   const [projectIndex, setProjectIndex] = useState(0);
+  const [galleryOpen, setGalleryOpen] = useState<number | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const projects = [
     {
       title: 'E-Assessment Platforms for Axia Digital',
+      images: ['UHCW_HOME.png', 'UHCW_AC.png'],
       description: 'Designed and developed WebApps. Integrated RBA allowing trainees in professional practice to validate their work.',
       tags: ['XSLT', 'XML', 'C# .NET'],
-      link: '#',
+      link: 'https://micro.yourskillspass.com/',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     },
     {
       title: 'Mobile App for Axia Digital',
+      images: ['MicroSkills.png'],
       description: 'Designed, Developed and Deployed a mobile app in use by Partners of the NHS England.',
       tags: ['Flutter', 'WebViews'],
-      link: '#',
-      gradient: 'from-purple-600 via-pink-500 to-rose-400'
-    },
-    {
-      title: 'Fluid Dynamics Simulator',
-      description: 'Real-time Navier-Stokes fluid simulation with interactive particle systems and velocity field visualization.',
-      tags: ['C++', 'OpenGL', 'SFML', 'Physics'],
-      link: '#',
+      link: 'https://play.google.com/store/apps/details?id=com.axia.skillspassport',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     },
     {
       title: 'Task Manager Application',
+      images: ['TaskManager.gif','TaskManager_create.png', 'TaskManager_home.png'],
       description: 'Comprehensive task management system for caseworkers featuring an interactive kanban board with real-time updates.',
-      tags: ['React', 'Express.js', 'MongoDB', 'Kanban Board', 'Real-time Updates'],
-      link: '#',
+      tags: ['React', 'Express.js', 'MsSQL', 'Kanban Board', 'Real-time Updates'],
+      link: 'https://github.com/sibti-ali/TaskManager',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     }
   ];
@@ -44,7 +42,7 @@ export default function Home() {
   const totalPages = Math.ceil(projects.length / projectsPerPage);
 
   useEffect(() => {
-  const handleScroll = () => {
+    const handleScroll = () => {
       const sections = ['home', 'journey', 'skills', 'projects'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
@@ -58,10 +56,9 @@ export default function Home() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    // Removed mousemove listener
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      // Removed mousemove listener cleanup
     };
   }, []);
 
@@ -79,6 +76,30 @@ export default function Home() {
 
   const goToNext = () => {
     setProjectIndex((prev) => (prev + 1) % totalPages);
+  };
+
+  const openGallery = (projectIdx: number) => {
+    setGalleryOpen(projectIdx);
+    setCurrentImageIndex(0);
+  };
+
+  const closeGallery = () => {
+    setGalleryOpen(null);
+    setCurrentImageIndex(0);
+  };
+
+  const nextImage = () => {
+    if (galleryOpen !== null) {
+      const project = visibleProjects[galleryOpen];
+      setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (galleryOpen !== null) {
+      const project = visibleProjects[galleryOpen];
+      setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
+    }
   };
 
   const skills: Record<'frontend' | 'backend' | 'tools', string[]> = {
@@ -99,11 +120,64 @@ export default function Home() {
         <div className="w-full">
           <FluidBackground />
         </div>
-        {/* <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:50px_50px]"></div> */}
       </div>
 
+      {/* Image Gallery Modal */}
+      {galleryOpen !== null && (
+        <div 
+          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4"
+          onClick={closeGallery}
+        >
+          <button
+            onClick={closeGallery}
+            className="absolute top-4 right-4 text-white hover:text-cyan-400 transition-colors"
+          >
+            <X size={32} />
+          </button>
+
+          <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={`/${visibleProjects[galleryOpen].images[currentImageIndex]}`}
+              alt={`${visibleProjects[galleryOpen].title} - Image ${currentImageIndex + 1}`}
+              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+            />
+
+            {visibleProjects[galleryOpen].images.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-white hover:text-cyan-400 transition-all"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-white hover:text-cyan-400 transition-all"
+                >
+                  <ChevronRight size={24} />
+                </button>
+
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                  {visibleProjects[galleryOpen].images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setCurrentImageIndex(idx)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        idx === currentImageIndex
+                          ? 'bg-cyan-400 w-8'
+                          : 'bg-slate-400 hover:bg-slate-300'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Navbar */}
-      <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-xl z-50 border-b border-slate-800/50 ">
+      <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-xl z-50 border-b border-slate-800/50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <a href="" className="text-2xl font-bold flex items-center gap-2">
@@ -164,8 +238,7 @@ export default function Home() {
       <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="mb-4 mt-4 inline-block relative">
-            <img src="/me.jpg" className="w-48 h-48 rounded-full shadow-2xl shadow-cyan-500/50"></img>
-            
+            <img src="/me.jpg" className="w-48 h-48 rounded-full shadow-2xl shadow-cyan-500/50" alt="Profile"></img>
           </div>
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -307,9 +380,33 @@ export default function Home() {
                   key={index} 
                   className="bg-slate-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-800/50 hover:border-cyan-500/50 transition-all group hover:transform hover:scale-105"
                 >
-                  <div className={`h-48 bg-gradient-to-br ${project.gradient} relative overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                  {/* Project Image or Gradient */}
+                  <div className="h-48 relative overflow-hidden cursor-pointer" onClick={() => project.images.length > 0 && openGallery(index)}>
+                    {project.images.length > 0 ? (
+                      <>
+                        <img
+                          src={`/${project.images[0]}`}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                        />
+                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Image size={32} className="text-white" />
+                          </div>
+                        </div>
+                        {project.images.length > 1 && (
+                          <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full text-xs text-white">
+                            {project.images.length} photos
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <div className={`h-full bg-gradient-to-br ${project.gradient} relative`}>
+                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+                      </div>
+                    )}
                   </div>
+
                   <div className="p-6">
                     <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-cyan-400 transition-colors">
                       {project.title}
@@ -327,6 +424,8 @@ export default function Home() {
                     </div>
                     <a
                       href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group/link"
                     >
                       View Project 
