@@ -411,7 +411,7 @@ export default function Home() {
                     <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-cyan-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-slate-400 mb-4 line-clamp-3">{project.description}</p>
+                    <p className="text-slate-400 mb-4 line-clamp-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag) => (
                         <span 
