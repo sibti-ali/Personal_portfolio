@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Download, Image } from 'lucide-react';
+import { Github, Linkedin, Lock, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Download, Image } from 'lucide-react';
 import Timeline from './Timeline';
 import { FluidBackground } from './FluidBackgroud';
 
@@ -16,23 +16,23 @@ export default function Home() {
       title: 'E-Assessment Platforms for Axia Digital',
       images: ['UHCW_HOME.png', 'UHCW_AC.png'],
       description: 'Designed and developed WebApps. Integrated RBA allowing trainees in professional practice to validate their work.',
-      tags: ['XSLT', 'XML', 'C# .NET'],
-      link: 'https://micro.yourskillspass.com/',
+      tags: ['jQuery','Bootstrap' ,'XSLT', 'XML', 'C# .NET','AWS'],
+      link: 'NA',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     },
     {
       title: 'Mobile App for Axia Digital',
       images: ['MicroSkills.png'],
       description: 'Designed, Developed and Deployed a mobile app in use by Partners of the NHS England.',
-      tags: ['Flutter', 'WebViews'],
-      link: 'https://play.google.com/store/apps/details?id=com.axia.skillspassport',
+      tags: ['Flutter', 'WebViews', 'Provider', 'Encrypted Storage', 'MVC', 'XCode', 'Android Studio'],
+      link: 'NA',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     },
     {
       title: 'Task Manager Application',
       images: ['TaskManager.gif','TaskManager_create.png', 'TaskManager_home.png'],
       description: 'Comprehensive task management system for caseworkers featuring an interactive kanban board with real-time updates.',
-      tags: ['React', 'Express.js', 'MsSQL', 'Kanban Board', 'Real-time Updates'],
+      tags: ['React', 'Express.js', 'SQL', 'Axios','Docs', 'Unit Testing','Kanban Board', 'Real-time Updates'],
       link: 'https://github.com/sibti-ali/TaskManager',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
     }
@@ -411,7 +411,7 @@ export default function Home() {
                     <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-cyan-400 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-slate-400 mb-4 line-clamp-4">{project.description}</p>
+                    <p className="text-slate-400 mb-4">{project.description}</p>
                     <div className="flex flex-wrap gap-2 mb-4">
                       {project.tags.map((tag) => (
                         <span 
@@ -422,15 +422,23 @@ export default function Home() {
                         </span>
                       ))}
                     </div>
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group/link"
-                    >
-                      View Project 
-                      <ExternalLink size={16} className="ml-2 group-hover/link:translate-x-1 transition-transform" />
-                    </a>
+                    {project.link === 'NA' ? (
+                      <span className="inline-flex items-center text-gray-400 font-medium">
+                        <Lock size={16} className="mr-2" />
+                        Contact for demo
+                      </span>
+                    ) : (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group/link"
+                      >
+                        View Project 
+                        <ExternalLink size={16} className="ml-2 group-hover/link:translate-x-1 transition-transform" />
+                      </a>
+                    )}
+                    
                   </div>
                 </div>
               ))}

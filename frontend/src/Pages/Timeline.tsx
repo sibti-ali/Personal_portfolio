@@ -53,8 +53,31 @@ export default function Timeline() {
     }
   ];
 
+  // Calculate expanded height for mobile
+  const getExpandedHeight = (node: TimelineNode) => {
+    // Base height for description + skills
+    const skillRows = Math.ceil(node.skills.length / 3);
+    return 120 + (skillRows * 30);
+  };
+
   const getNodePosition = (index: number) => {
-    return index * 150 + 30;
+    let position = 30;
+    
+    // For mobile, calculate cumulative spacing with expanded nodes
+    if (clickedNode) {
+      for (let i = 0; i < index; i++) {
+        const nodeId = nodes[i].id;
+        if (clickedNode === nodeId) {
+          position += 150 + getExpandedHeight(nodes[i]);
+        } else {
+          position += 150;
+        }
+      }
+    } else {
+      position = index * 150 + 30;
+    }
+    
+    return position;
   };
 
   const borderColor = (node: TimelineNode) => {
@@ -74,6 +97,18 @@ export default function Timeline() {
     setClickedNode(clickedNode === nodeId ? null : nodeId);
   };
 
+  // Calculate total height including expanded nodes
+  const getTotalHeight = () => {
+    let height = 100;
+    nodes.forEach(node => {
+      if (clickedNode === node.id) {
+        height += 150 + getExpandedHeight(node);
+      } else {
+        height += 150;
+      }
+    });
+    return height;
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto px-4 ">
@@ -86,10 +121,10 @@ export default function Timeline() {
         My education and professional experience
       </p>
 
-      <div className="relative" style={{ minHeight: `${nodes.length * 150 + 100}px` }}>
+      <div className="relative transition-all duration-500 ease-in-out" style={{ minHeight: `${getTotalHeight()}px` }}>
         
         {/* Connecting line - Desktop at 50%, Mobile at 20px from left */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+        <svg className="absolute inset-0 w-full h-full pointer-events-none transition-all duration-500" style={{ zIndex: 1 }}>
           {/* Desktop line */}
           <line 
             className="hidden md:block"
@@ -102,7 +137,7 @@ export default function Timeline() {
           />
           {/* Mobile line */}
           <line 
-            className="md:hidden"
+            className="md:hidden transition-all duration-500"
             x1="20" 
             y1={getNodePosition(0) + 20} 
             x2="20" 
@@ -133,7 +168,7 @@ export default function Timeline() {
                   }}
                 >
                   <div 
-                    className={`w-80 bg-slate-900 border rounded-lg p-4 transition-all cursor-pointer ${borderColor(node)}`}
+                    className={`w-80 bg-slate-900 border rounded-lg p-4 transition-all duration-300 cursor-pointer ${borderColor(node)}`}
                     onMouseEnter={() => setHoveredNode(node.id)}
                     onMouseLeave={() => setHoveredNode(null)}
                     onClick={() => handleCardClick(node.id)}
@@ -143,7 +178,7 @@ export default function Timeline() {
                     <p className="text-slate-500 text-xs">{node.period}</p>
                     
                     {isNodeExpanded(node.id) && (
-                      <div className="mt-3 pt-3 border-t border-slate-800">
+                      <div className="mt-3 pt-3 border-t border-slate-800 animate-fade-in">
                         <p className="text-slate-300 text-sm mb-2">{node.description}</p>
                         <div className="flex flex-wrap gap-1">
                           {node.skills.map(skill => (
@@ -159,7 +194,7 @@ export default function Timeline() {
 
                 {/* Card - Mobile (all on right side) */}
                 <div 
-                  className="md:hidden absolute"
+                  className="md:hidden absolute transition-all duration-500 ease-in-out"
                   style={{
                     top: `${topPosition}px`,
                     left: '44px',
@@ -168,16 +203,20 @@ export default function Timeline() {
                   }}
                 >
                   <div 
-                    className={`bg-slate-900 border rounded-lg p-4 transition-all cursor-pointer ${borderColor(node)}`}
-                    onMouseEnter={() => setHoveredNode(node.id)}
-                    onMouseLeave={() => setHoveredNode(null)}
+                    className={`bg-slate-900 border rounded-lg p-4 transition-all duration-300 cursor-pointer ${borderColor(node)}`}
                     onClick={() => handleCardClick(node.id)}
                   >
                     <h3 className="text-white font-medium mb-1">{node.title}</h3>
                     <p className="text-slate-400 text-sm mb-0.5">{node.organization}</p>
                     <p className="text-slate-500 text-xs">{node.period}</p>
                     
-                    {isNodeExpanded(node.id) && (
+                    <div 
+                      className="overflow-hidden transition-all duration-300 ease-in-out"
+                      style={{
+                        maxHeight: isNodeExpanded(node.id) ? '500px' : '0px',
+                        opacity: isNodeExpanded(node.id) ? 1 : 0
+                      }}
+                    >
                       <div className="mt-3 pt-3 border-t border-slate-800">
                         <p className="text-slate-300 text-sm mb-2">{node.description}</p>
                         <div className="flex flex-wrap gap-1">
@@ -188,7 +227,7 @@ export default function Timeline() {
                           ))}
                         </div>
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
 
