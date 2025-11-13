@@ -12,6 +12,14 @@ export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const projects = [
+     {
+      title: 'HTTP server from scratch',
+      images: ['HTTP_GO.png'],
+      description: 'Building my own HTTP server from scratch. Parsing HTTP messages from data streaming and implemented chunked encoding',
+      tags: ['Go / GoLang', 'RFC 9110', 'HTTP', 'State Machines', 'Byte parsing', 'Chunked Encoding'],
+      link: 'https://github.com/sibti-ali/HTTP-server-from-scratch',
+      gradient: 'from-purple-600 via-pink-500 to-rose-400'
+    },
     {
       title: 'E-Assessment Platforms for Axia Digital',
       images: ['UHCW_HOME.png', 'UHCW_AC.png'],
@@ -35,7 +43,8 @@ export default function Home() {
       tags: ['React', 'Express.js', 'SQL', 'Axios','Docs', 'Unit Testing','Kanban Board', 'Real-time Updates'],
       link: 'https://github.com/sibti-ali/TaskManager',
       gradient: 'from-purple-600 via-pink-500 to-rose-400'
-    }
+    },
+   
   ];
 
   const projectsPerPage = 3;
