@@ -15,7 +15,7 @@ export default function Home() {
       images: ['fluid_simulations.png'],
       description: 'Real-time 2D fluid simulator with parallelization using C++, OpenGL, and OpenMPI.',
       tags: ['C++', 'OpenGL', 'OpenMPI', 'Parallel Computing'],
-      link: 'NA',
+      link: 'https://github.com/sibti-ali/FluidSim',
       accent: 'border-blue-500'
     },
     {
@@ -27,20 +27,20 @@ export default function Home() {
       accent: 'border-cyan-500'
     },
     {
-      title: 'E-Assessment Platforms',
-      images: ['UHCW_HOME.png', 'UHCW_AC.png'],
-      description: 'Designed and developed WebApps. Integrated RBA allowing trainees in professional practice to validate their work.',
-      tags: ['jQuery', 'Bootstrap', 'XSLT', 'XML', 'C# .NET', 'AWS'],
-      link: 'NA',
-      accent: 'border-pink-500'
-    },
-    {
       title: 'Mobile App',
       images: ['MicroSkills.png'],
       description: 'Designed, Developed and Deployed a mobile app in use by Partners of the NHS England.',
       tags: ['Flutter', 'WebViews', 'Provider', 'Encrypted Storage', 'MVC', 'XCode', 'Android Studio'],
       link: 'NA',
       accent: 'border-purple-500'
+    },
+    {
+      title: 'E-Assessment Platforms',
+      images: ['UHCW_HOME.png', 'UHCW_AC.png'],
+      description: 'Designed and developed WebApps. Integrated RBA allowing trainees in professional practice to validate their work.',
+      tags: ['jQuery', 'Bootstrap', 'XSLT', 'XML', 'C# .NET', 'AWS'],
+      link: 'NA',
+      accent: 'border-pink-500'
     },
     {
       title: 'Task Manager',
