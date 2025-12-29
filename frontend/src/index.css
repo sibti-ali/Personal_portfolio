@@ -1,12 +1,66 @@
 @import "tailwindcss";
-@keyframes gridmove {
-  0% {
-    background-position: 0 0, 0 0;
-  }
-  100% {
-    background-position: 50px 50px, 50px 50px;
-  }
+
+@theme {
+  --color-bg-primary: var(--bg-primary);
+  --color-text-primary: var(--text-primary);
+  --color-accent-cyan: var(--accent-cyan);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-green: var(--accent-green);
 }
-.animate-gridmove {
-  animation: gridmove 5s linear infinite;
+
+:root {
+  --bg-primary: #f4f4f5;
+  /* Zinc 100 - softer than pure white */
+  --text-primary: #09090b;
+
+  /* VS Code-ish Accents (Light Mode - slightly darker for contrast) */
+  --accent-cyan: #0891b2;
+  --accent-pink: #db2777;
+  --accent-purple: #7c3aed;
+  --accent-green: #16a34a;
+
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+.dark {
+  --bg-primary: #09090b;
+  /* Zinc 950 */
+  --text-primary: #fafafa;
+  /* Zinc 50 */
+
+  /* VS Code-ish Accents (Dark Mode - vibrant) */
+  --accent-cyan: #22d3ee;
+  --accent-pink: #f472b6;
+  --accent-purple: #a78bfa;
+  --accent-green: #4ade80;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom Selection Color */
+::selection {
+  background-color: var(--accent-cyan);
+  color: white;
+}
+
+/* Sharp aesthetic utilities */
+.sharp-border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--text-primary);
+}
+
+.border-colored-hover:hover {
+  border-color: var(--accent-cyan);
+}
+
+.sharp-border {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--text-primary);
 }

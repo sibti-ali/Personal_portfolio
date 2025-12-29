@@ -1,50 +1,56 @@
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Lock, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Download, Image } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Menu, X, ChevronLeft, ChevronRight, Terminal } from 'lucide-react';
 import Timeline from './Timeline';
-import { FluidBackground } from './FluidBackgroud';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [activeSection, setActiveSection] = useState<string>('home');
   const [activeTab, setActiveTab] = useState<'frontend' | 'backend' | 'tools'>('frontend');
   const [projectIndex, setProjectIndex] = useState(0);
-  const [galleryOpen, setGalleryOpen] = useState<number | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const projects = [
-     {
+    {
+      title: 'Fluid Simulations',
+      images: ['fluid_simulations.png'],
+      description: 'Real-time 2D fluid simulator with parallelization using C++, OpenGL, and OpenMPI.',
+      tags: ['C++', 'OpenGL', 'OpenMPI', 'Parallel Computing'],
+      link: 'NA',
+      accent: 'border-blue-500'
+    },
+    {
       title: 'HTTP server from scratch',
       images: ['HTTP_GO.png'],
       description: 'Building my own HTTP server from scratch. Parsing HTTP messages from data streaming and implemented chunked encoding',
       tags: ['Go / GoLang', 'RFC 9110', 'HTTP', 'State Machines', 'Byte parsing', 'Chunked Encoding'],
       link: 'https://github.com/sibti-ali/HTTP-server-from-scratch',
-      gradient: 'from-purple-600 via-pink-500 to-rose-400'
+      accent: 'border-cyan-500'
     },
     {
-      title: 'E-Assessment Platforms for Axia Digital',
+      title: 'E-Assessment Platforms',
       images: ['UHCW_HOME.png', 'UHCW_AC.png'],
       description: 'Designed and developed WebApps. Integrated RBA allowing trainees in professional practice to validate their work.',
-      tags: ['jQuery','Bootstrap' ,'XSLT', 'XML', 'C# .NET','AWS'],
+      tags: ['jQuery', 'Bootstrap', 'XSLT', 'XML', 'C# .NET', 'AWS'],
       link: 'NA',
-      gradient: 'from-purple-600 via-pink-500 to-rose-400'
+      accent: 'border-pink-500'
     },
     {
-      title: 'Mobile App for Axia Digital',
+      title: 'Mobile App',
       images: ['MicroSkills.png'],
       description: 'Designed, Developed and Deployed a mobile app in use by Partners of the NHS England.',
       tags: ['Flutter', 'WebViews', 'Provider', 'Encrypted Storage', 'MVC', 'XCode', 'Android Studio'],
       link: 'NA',
-      gradient: 'from-purple-600 via-pink-500 to-rose-400'
+      accent: 'border-purple-500'
     },
     {
-      title: 'Task Manager Application',
-      images: ['TaskManager.gif','TaskManager_create.png', 'TaskManager_home.png'],
+      title: 'Task Manager',
+      images: ['TaskManager.gif', 'TaskManager_create.png', 'TaskManager_home.png'],
       description: 'Comprehensive task management system for caseworkers featuring an interactive kanban board with real-time updates.',
-      tags: ['React', 'Express.js', 'SQL', 'Axios','Docs', 'Unit Testing','Kanban Board', 'Real-time Updates'],
+      tags: ['React', 'Express.js', 'SQL', 'Axios', 'Docs', 'Unit Testing', 'Kanban Board', 'Real-time Updates'],
       link: 'https://github.com/sibti-ali/TaskManager',
-      gradient: 'from-purple-600 via-pink-500 to-rose-400'
-    },
-   
+      accent: 'border-green-500'
+    }
+    
   ];
 
   const projectsPerPage = 3;
@@ -65,10 +71,7 @@ export default function Home() {
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
@@ -79,42 +82,10 @@ export default function Home() {
     }
   };
 
-  const goToPrevious = () => {
-    setProjectIndex((prev) => (prev - 1 + totalPages) % totalPages);
-  };
-
-  const goToNext = () => {
-    setProjectIndex((prev) => (prev + 1) % totalPages);
-  };
-
-  const openGallery = (projectIdx: number) => {
-    setGalleryOpen(projectIdx);
-    setCurrentImageIndex(0);
-  };
-
-  const closeGallery = () => {
-    setGalleryOpen(null);
-    setCurrentImageIndex(0);
-  };
-
-  const nextImage = () => {
-    if (galleryOpen !== null) {
-      const project = visibleProjects[galleryOpen];
-      setCurrentImageIndex((prev) => (prev + 1) % project.images.length);
-    }
-  };
-
-  const prevImage = () => {
-    if (galleryOpen !== null) {
-      const project = visibleProjects[galleryOpen];
-      setCurrentImageIndex((prev) => (prev - 1 + project.images.length) % project.images.length);
-    }
-  };
-
   const skills: Record<'frontend' | 'backend' | 'tools', string[]> = {
-    frontend: ['React', 'Angular', 'TypeScript', 'Tailwind CSS', 'XSLT/XML', 'HTML/CSS'],
-    backend: ['Node.js', 'Express', 'REST APIs', 'SQL', 'Python', 'C#/C++'],
-    tools: ['Git', 'VS Code', 'Postman', 'Unit testing', 'AWS', 'Azure DevOps', 'Docker']
+    frontend: ['React', 'Angular', 'TypeScript', 'Tailwind CSS', 'Dart', 'HTML/CSS'],
+    backend: ['Node.js', 'Express', 'Go', 'SQL', 'Python', 'C#/C++', 'OpenMPI'],
+    tools: ['Git', 'VS Code', 'Postman', 'AWS', 'Azure DevOps', 'Docker', 'Linux']
   };
 
   const visibleProjects = projects.slice(
@@ -123,117 +94,52 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden relative">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="w-full">
-          <FluidBackground />
-        </div>
-      </div>
-
-      {/* Image Gallery Modal */}
-      {galleryOpen !== null && (
-        <div 
-          className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4"
-          onClick={closeGallery}
-        >
-          <button
-            onClick={closeGallery}
-            className="absolute top-4 right-4 text-white hover:text-cyan-400 transition-colors"
-          >
-            <X size={32} />
-          </button>
-
-          <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={`/${visibleProjects[galleryOpen].images[currentImageIndex]}`}
-              alt={`${visibleProjects[galleryOpen].title} - Image ${currentImageIndex + 1}`}
-              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
-            />
-
-            {visibleProjects[galleryOpen].images.length > 1 && (
-              <>
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-white hover:text-cyan-400 transition-all"
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-white hover:text-cyan-400 transition-all"
-                >
-                  <ChevronRight size={24} />
-                </button>
-
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                  {visibleProjects[galleryOpen].images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentImageIndex(idx)}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        idx === currentImageIndex
-                          ? 'bg-cyan-400 w-8'
-                          : 'bg-slate-400 hover:bg-slate-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans selection:bg-[var(--text-primary)] selection:text-[var(--bg-primary)]">
 
       {/* Navbar */}
-      <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-xl z-50 border-b border-slate-800/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <a href="" className="text-2xl font-bold flex items-center gap-2">
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent font-mono">
-                &lt;SA/&gt;
-              </span>
+      <nav className="fixed top-0 w-full bg-[var(--bg-primary)]/90 backdrop-blur-sm z-40 border-b border-[var(--text-primary)]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex justify-between items-center h-20">
+            <a onClick={() => scrollToSection('home')} className="text-2xl font-bold font-mono tracking-tighter cursor-pointer hover:opacity-70 transition-opacity">
+              &lt;SA/&gt;
             </a>
-            
-            {/* Desktop Menu */}
-            <div className="hidden md:flex space-x-8">
+
+            <div className="hidden md:flex items-center space-x-10">
               {['home', 'journey', 'skills', 'projects'].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`capitalize transition-all relative group ${
-                    activeSection === section
-                      ? 'text-cyan-400'
-                      : 'text-slate-300 hover:text-white'
-                  }`}
+                  className={`uppercase text-sm tracking-widest hover:line-through decoration-2 ${activeSection === section ? 'font-bold line-through decoration-[var(--accent-cyan)]' : 'text-gray-500 dark:text-gray-400'
+                    }`}
                 >
                   {section}
-                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 transition-all ${
-                    activeSection === section ? 'w-full' : 'w-0 group-hover:w-full'
-                  }`}></span>
                 </button>
               ))}
+              <div className="pl-4 border-l border-gray-300 dark:border-gray-700">
+                <ThemeToggle />
+              </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 text-slate-300 hover:text-white"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            <div className="flex items-center gap-4 md:hidden">
+              <ThemeToggle />
+              <button
+                className="p-2"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/50">
-            <div className="px-4 py-4 space-y-3">
+          <div className="md:hidden bg-[var(--bg-primary)] border-t border-[var(--text-primary)]">
+            <div className="px-6 py-6 space-y-4">
               {['home', 'journey', 'skills', 'projects'].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className="block w-full text-left px-4 py-2 capitalize text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 rounded-lg transition-colors"
+                  className="block w-full text-left py-2 uppercase tracking-widest text-sm hover:translate-x-2 transition-transform"
                 >
                   {section}
                 </button>
@@ -244,291 +150,173 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16 relative">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="mb-4 mt-4 inline-block relative">
-            <img src="/me.jpg" className="w-48 h-48 rounded-full shadow-2xl shadow-cyan-500/50" alt="Profile"></img>
+      <section id="home" className="min-h-screen flex items-center justify-center px-6 pt-20 mt-2">
+        <div className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="order-2 lg:order-1">
+            <div className="inline-block px-3 py-1 border border-[var(--accent-cyan)] text-[var(--accent-cyan)] text-xs font-mono mb-6 bg-[var(--accent-cyan)]/5">
+              AVAILABLE FOR WORK
+            </div>
+            <h1 className="text-6xl sm:text-8xl font-black mb-6 tracking-tighter leading-none">
+              SIBTAIN <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] to-[var(--accent-purple)]">ALI</span>
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
+              Software Developer specializing in enterprise solutions, data-driven platforms, and digital experiences.
+            </p>
+
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="/Sibtain_Ali.pdf"
+                download="Sibtain_Ali_Resume.pdf"
+                className="px-8 py-4 bg-[var(--text-primary)] text-[var(--bg-primary)] font-bold hover:bg-[var(--accent-cyan)] hover:border-[var(--accent-cyan)] border border-[var(--text-primary)] transition-all flex items-center gap-2 group"
+              >
+                DOWNLOAD RESUME
+                <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              </a>
+              <a
+                href="#contact"
+                className="px-8 py-4 border border-[var(--text-primary)] hover:border-[var(--accent-pink)] hover:text-[var(--accent-pink)] transition-all font-bold"
+              >
+                CONTACT
+              </a>
+            </div>
+
+            <div className="mb-6 flex gap-6 mt-12">
+              <a href="https://github.com/sibti-ali/" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-[var(--accent-cyan)] transition-colors transform hover:-translate-y-1"><Github size={24} /></a>
+              <a href="https://www.linkedin.com/in/sibtain-ali-73ab7a213/" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-[var(--accent-cyan)] transition-colors transform hover:-translate-y-1"><Linkedin size={24} /></a>
+              <a href="mailto:jsibtainali@gmail.com" className="text-gray-500 hover:text-[var(--accent-cyan)] transition-colors transform hover:-translate-y-1"><Mail size={24} /></a>
+            </div>
           </div>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Sibtain Ali
-            </span>
-          </h1>
-          <p className="text-xl sm:text-2xl text-slate-300 mb-4">
-            Building enterprise solutions for professional development
-          </p>
-          <p className="text-lg text-slate-400 mb-8 max-w-2xl mx-auto">
-            Full Stack Developer specializing in developing enterprise grade web & mobile apps
-          </p>
-          <div className="flex justify-center gap-4 mb-12">
-            <a 
-              href="/Sibtain_Ali.pdf"
-              download="Sibtain_Ali_Resume.pdf"
-              className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
-            >
-              <Download size={20} />
-              Download Resume
-            </a>
-            <a 
-              href="#contact" 
-              className="px-8 py-3 border-2 border-cyan-500/50 text-cyan-400 rounded-full hover:bg-cyan-500/10 hover:border-cyan-400 transition-all"
-            >
-              Get In Touch
-            </a>
-          </div>
-          <div className="flex justify-center gap-6">
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/sibti-ali/" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
-              <Github size={24} />
-            </a>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/sibtain-ali-73ab7a213/" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
-              <Linkedin size={24} />
-            </a>
-            <a href="mailto:jsibtainali@gmail.com" className="text-slate-400 hover:text-cyan-400 transition-colors transform hover:scale-110">
-              <Mail size={24} />
-            </a>
+
+          <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[var(--accent-cyan)] to-[var(--accent-purple)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl"></div>
+              <div className="w-64 h-64 sm:w-80 sm:h-80 transition-all duration-700 ease-in-out border-2 border-[var(--text-primary)] group-hover:border-[var(--accent-cyan)] p-2 bg-[var(--bg-primary)]">
+                <img src="/me.jpg" className="w-full h-full object-cover" alt="Profile" />
+              </div>
+              <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-[var(--text-primary)] group-hover:border-[var(--accent-purple)] transition-colors duration-500 -z-20"></div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Timeline Section */}
-      <section id="journey" className="min-h-screen flex items-center py-20 px-4 relative z-10">
+      <section id="journey" className=" flex py-24 px-6 border-t border-[var(--text-primary)]">
         <div className="w-full">
           <Timeline />
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="min-h-screen flex items-center py-20 px-4 relative z-10">
-        <div className="max-w-4xl mx-auto w-full">
-          <h2 className="text-4xl font-bold text-center mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Skills & Expertise
-            </span>
-          </h2>
-          <p className="text-center text-slate-400 mb-12 max-w-2xl mx-auto">
-            Technologies I use to build enterprise-grade applications
-          </p>
-          
-          {/* Tab Navigation */}
-          <div className="flex justify-center mb-8 border-b border-slate-800/50">
-            <button
-              onClick={() => setActiveTab('frontend')}
-              className={`px-8 py-4 font-semibold transition-all relative ${
-                activeTab === 'frontend'
-                  ? 'text-cyan-400'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Frontend
-              {activeTab === 'frontend' && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500"></span>
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab('backend')}
-              className={`px-8 py-4 font-semibold transition-all relative ${
-                activeTab === 'backend'
-                  ? 'text-cyan-400'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Backend
-              {activeTab === 'backend' && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500"></span>
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab('tools')}
-              className={`px-8 py-4 font-semibold transition-all relative ${
-                activeTab === 'tools'
-                  ? 'text-cyan-400'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              Tools
-              {activeTab === 'tools' && (
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500"></span>
-              )}
-            </button>
-          </div>
+      <section id="skills" className="py-24 px-6 border-t border-[var(--text-primary)]">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row gap-12">
+            <div className="md:w-1/3">
+              <h2 className="text-4xl font-black mb-2 uppercase tracking-tight">Technical<br />Arsenal</h2>
+              <p className="text-gray-500 dark:text-gray-400 mt-4">
+                A curated list of technologies I use to build performant and scalable applications.
+              </p>
+            </div>
 
-          {/* Tab Content */}
-          <div className="bg-slate-900/50 backdrop-blur-sm p-8 rounded-2xl border border-slate-800/50 min-h-[300px]">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {skills[activeTab as keyof typeof skills].map((skill, index) => (
-                <div
-                  key={skill}
-                  className="flex items-center p-2 bg-slate-800/50 rounded-lg hover:bg-slate-800 hover:border-cyan-500/50 border border-transparent transition-all group"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <span className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mr-3 group-hover:shadow-lg group-hover:shadow-cyan-500/50"></span>
-                  <span className="text-slate-300 font-medium group-hover:text-cyan-400 transition-colors">{skill}</span>
-                </div>
-              ))}
+            <div className="md:w-2/3">
+              <div className="flex gap-8 mb-8 border-b-2 border-gray-200 dark:border-gray-800 pb-4">
+                {(['frontend', 'backend', 'tools'] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`uppercase font-bold tracking-wider text-sm ${activeTab === tab ? 'text-[var(--text-primary)]' : 'text-gray-400'}`}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {skills[activeTab].map((skill) => (
+                  <div key={skill} className="p-4 border border-gray-200 dark:border-gray-800 hover:border-[var(--text-primary)] transition-colors group cursor-default">
+                    <span className="font-mono text-sm group-hover:text-[var(--accent-cyan)] transition-colors">
+                      {skill}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-4 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Featured Projects
-            </span>
-          </h2>
-          <p className="text-center text-slate-400 mb-16 max-w-2xl mx-auto">
-            Enterprise solutions and innovative applications
-          </p>
-          
-          <div className="relative">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {visibleProjects.map((project, index) => (
-                <div 
-                  key={index} 
-                  className="bg-slate-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-800/50 hover:border-cyan-500/50 transition-all group hover:transform hover:scale-105"
-                >
-                  {/* Project Image or Gradient */}
-                  <div className="h-48 relative overflow-hidden cursor-pointer" onClick={() => project.images.length > 0 && openGallery(index)}>
-                    {project.images.length > 0 ? (
-                      <>
-                        <img
-                          src={`/${project.images[0]}`}
-                          alt={project.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
-                        />
-                        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Image size={32} className="text-white" />
-                          </div>
-                        </div>
-                        {project.images.length > 1 && (
-                          <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full text-xs text-white">
-                            {project.images.length} photos
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className={`h-full bg-gradient-to-br ${project.gradient} relative`}>
-                        <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-cyan-400 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-slate-400 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tags.map((tag) => (
-                        <span 
-                          key={tag} 
-                          className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 rounded-full text-sm"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    {project.link === 'NA' ? (
-                      <span className="inline-flex items-center text-gray-400 font-medium">
-                        <Lock size={16} className="mr-2" />
-                        Contact for demo
-                      </span>
-                    ) : (
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-cyan-400 hover:text-cyan-300 font-medium group/link"
-                      >
-                        View Project 
-                        <ExternalLink size={16} className="ml-2 group-hover/link:translate-x-1 transition-transform" />
-                      </a>
-                    )}
-                    
-                  </div>
-                </div>
-              ))}
+      <section id="projects" className="py-24 px-6 border-t border-[var(--text-primary)]">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-end mb-16">
+            <h2 className="text-4xl font-black uppercase tracking-tight">Selected<br />Works</h2>
+            <div className="flex gap-2">
+              <button onClick={() => setProjectIndex(Math.max(0, projectIndex - 1))} disabled={projectIndex === 0} className="p-3 border border-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all"><ChevronLeft size={20} /></button>
+              <button onClick={() => setProjectIndex(Math.min(totalPages - 1, projectIndex + 1))} disabled={projectIndex === totalPages - 1} className="p-3 border border-[var(--text-primary)] disabled:opacity-30 hover:bg-[var(--text-primary)] hover:text-[var(--bg-primary)] transition-all"><ChevronRight size={20} /></button>
             </div>
+          </div>
 
-            {/* Navigation Arrows */}
-            {totalPages > 1 && (
-              <>
-                <button
-                  onClick={goToPrevious}
-                  className="absolute -left-16 top-1/3 -translate-y-1/2 p-3 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-slate-300 hover:text-cyan-400 transition-all hidden lg:flex items-center justify-center"
-                  aria-label="Previous projects"
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                <button
-                  onClick={goToNext}
-                  className="absolute -right-16 top-1/3 -translate-y-1/2 p-3 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-slate-300 hover:text-cyan-400 transition-all hidden lg:flex items-center justify-center"
-                  aria-label="Next projects"
-                >
-                  <ChevronRight size={24} />
-                </button>
-
-                {/* Mobile Navigation */}
-                <div className="flex lg:hidden justify-center gap-4 mt-8">
-                  <button
-                    onClick={goToPrevious}
-                    className="p-2 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-slate-300 hover:text-cyan-400 transition-all"
-                    aria-label="Previous projects"
-                  >
-                    <ChevronLeft size={20} />
-                  </button>
-                  <div className="flex items-center gap-2">
-                    {Array.from({ length: totalPages }).map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setProjectIndex(i)}
-                        className={`w-2 h-2 rounded-full transition-all ${
-                          i === projectIndex
-                            ? 'bg-cyan-400 w-6'
-                            : 'bg-slate-600 hover:bg-slate-400'
-                        }`}
-                        aria-label={`Go to page ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    onClick={goToNext}
-                    className="p-2 bg-slate-900/80 hover:bg-cyan-500/20 border border-slate-800/50 hover:border-cyan-500/50 rounded-full text-slate-300 hover:text-cyan-400 transition-all"
-                    aria-label="Next projects"
-                  >
-                    <ChevronRight size={20} />
-                  </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {visibleProjects.map((project, index) => (
+              <div key={index} className="group border border-gray-200 dark:border-gray-800 hover:border-[var(--text-primary)] transition-all h-full flex flex-col">
+                <div className="h-48 overflow-hidden border-b border-gray-200 dark:border-gray-800 relative bg-gray-100 dark:bg-gray-900">
+                  {project.images.length > 0 ? (
+                    <img
+                      src={`/${project.images[0]}`}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-zinc-900 text-gray-300">
+                      <Terminal size={48} strokeWidth={1} />
+                    </div>
+                  )}
                 </div>
-              </>
-            )}
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-xl font-bold mb-3">{project.title}</h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mb-6">
+                    {project.tags.slice(0, 4).map(tag => (
+                      <span key={tag} className="text-xs font-mono border border-gray-200 dark:border-gray-800 px-2 py-1">
+                        {tag}
+                      </span>
+                    ))}
+                    {project.tags.length > 4 && <span className="text-xs font-mono px-2 py-1">+{project.tags.length - 4}</span>}
+                  </div>
+
+                  {project.link !== 'NA' ? (
+                    <a href={project.link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-bold hover:gap-4 transition-all">
+                      VIEW SOURCE <ExternalLink size={16} />
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 text-sm text-gray-400 cursor-not-allowed">
+                      PRIVATE PROJECT
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-slate-900/80 backdrop-blur-xl border-t border-slate-800/50 py-12 px-4 relative z-10">
-        <div className="max-w-6xl mx-auto text-center">
-          <h3 className="text-2xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-              Let's Create Something Amazing
-            </span>
-          </h3>
-          <p className="text-slate-400 mb-6">
-            Open to collaborations on enterprise applications and innovative projects
-          </p>
-          <a
-            href="mailto:jsibtainali@gmail.com"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-full hover:shadow-lg hover:shadow-cyan-500/50 transition-all hover:scale-105"
-          >
-            Get In Touch
-          </a>
-          <div className="mt-8 pt-8 border-t border-slate-800/50 text-slate-500">
-            <p>&copy; 2025 Sibtain Ali. Creating cool stuff.</p>
-          </div>
+      <footer id="contact" className="py-12 px-6 border-t border-[var(--text-primary)] bg-[var(--bg-primary)] text-center">
+        <a
+          href="mailto:jsibtainali@gmail.com"
+          className="inline-block text-lg font-bold hover:text-[var(--accent-cyan)] transition-colors mb-6"
+        >
+          jsibtainali@gmail.com
+        </a>
+
+        <div className="flex justify-center gap-6 mb-8">
+          <a href="https://github.com/sibti-ali/" target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition-colors"><Github size={20} /></a>
+          <a href="https://www.linkedin.com/in/sibtain-ali-73ab7a213/" target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition-colors"><Linkedin size={20} /></a>
         </div>
+
+        <p className="text-xs font-mono text-gray-400">© {new Date().getFullYear()} SIBTAIN ALI</p>
       </footer>
     </div>
   );

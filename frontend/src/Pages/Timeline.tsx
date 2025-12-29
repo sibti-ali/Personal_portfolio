@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface TimelineNode {
   id: string;
@@ -11,18 +11,18 @@ interface TimelineNode {
 }
 
 export default function Timeline() {
-  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
-  const [clickedNode, setClickedNode] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleNodes, setVisibleNodes] = useState<number>(0);
 
   const nodes: TimelineNode[] = [
     {
       id: 'bsc-start',
-      title: 'Started my bachelor`s in Computer Science',
+      title: 'BSc Computer Science',
       organization: 'University of Huddersfield',
       period: '2019',
       type: 'education',
       description: 'Started Bachelor of Science in Computer Science with focus on software engineering, algorithms, and web technologies.',
-      skills: ['Data Structures & Algorithms', 'Databases', 'Web Development', 'Embedded Systems', 'AI']
+      skills: ['Data Structures', 'Algorithms', 'Web Dev', 'Embedded Systems', 'AI']
     },
     {
       id: 'internship',
@@ -39,223 +39,135 @@ export default function Timeline() {
       organization: 'BSc Computer Science',
       period: '2023',
       type: 'education',
-      description: 'Graduated with the highest achievable grade (1:1) with the Mark Humphry\'s Memorial Prize for Outstanding Achievement During Placement Year.',
-      skills: ['Mark Humphry\'s Memorial Prize', 'First(1:1)']
+      description: 'Graduated with the highest achievable grade (1:1) with the Mark Humphreys Memorial Prize for Outstanding Achievement.',
+      skills: ['Mark Humphreys Prize', 'First Class (1:1)']
     },
     {
       id: 'developer',
       title: 'Software Developer',
       organization: 'Axia Digital',
-      period: '2022 - Present',
+      period: '2022 - Oct 2025',
       type: 'work',
-      description: 'Building enterprise-grade CPD platforms for professionals. Leading development of multiple projects with experience in cloud technologies.',
-      skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'SQL', 'IIS', 'Docker']
+      description: 'Led development of microservices using React/Node.js. Managed Azure cloud infrastructure and CI/CD pipelines.',
+      skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'Azure', 'SQL', 'Docker', 'GitHub Actions']
     }
   ];
 
-  // Calculate expanded height for mobile
-  const getExpandedHeight = (node: TimelineNode) => {
-    // Base height for description + skills
-    const skillRows = Math.ceil(node.skills.length / 3);
-    return 120 + (skillRows * 30);
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
 
-  const getNodePosition = (index: number) => {
-    let position = 30;
-    
-    // For mobile, calculate cumulative spacing with expanded nodes
-    if (clickedNode) {
-      for (let i = 0; i < index; i++) {
-        const nodeId = nodes[i].id;
-        if (clickedNode === nodeId) {
-          position += 150 + getExpandedHeight(nodes[i]);
-        } else {
-          position += 150;
-        }
-      }
-    } else {
-      position = index * 150 + 30;
-    }
-    
-    return position;
-  };
+      const container = containerRef.current;
+      const { top } = container.getBoundingClientRect();
+      const containerHeight = container.offsetHeight;
+      const windowHeight = window.innerHeight;
 
-  const borderColor = (node: TimelineNode) => {
-    const isExpanded = hoveredNode === node.id || clickedNode === node.id;
-    return isExpanded
-      ? (node.type === 'education' ? 'border-purple-500' : 'border-cyan-500')
-      : 'border-slate-700';
-  };
+      // Ensure we are within the scrollable area of the container
+      // The total scrollable distance is containerHeight - windowHeight (since the last screen is sticky)
+      // Progress 0 when top is at 0 (or slightly before/after depending on sticky trigger)
 
-  const isNodeExpanded = (nodeId: string) => {
-    if (clickedNode) return clickedNode === nodeId;
-    return hoveredNode === nodeId;
-  };
+      // We want progress 0 when container top hits viewport top (sticky starts)
+      // We want progress 1 when container bottom hits viewport bottom (sticky ends)
 
-  const handleCardClick = (nodeId: string) => {
-    setHoveredNode(null);
-    setClickedNode(clickedNode === nodeId ? null : nodeId);
-  };
+      // Sticky starts when top <= 0
+      const scrollDist = -top;
+      const totalDist = containerHeight - windowHeight;
 
-  // Calculate total height including expanded nodes
-  const getTotalHeight = () => {
-    let height = 100;
-    nodes.forEach(node => {
-      if (clickedNode === node.id) {
-        height += 150 + getExpandedHeight(node);
-      } else {
-        height += 150;
-      }
-    });
-    return height;
-  };
+      let progress = scrollDist / totalDist;
+
+      // Clamp
+      progress = Math.max(0, Math.min(1, progress));
+
+      // Calculate nodes to show. 
+      // We have `nodes.length` steps.
+      // progress 0 -> 0.25 : Node 1
+      // progress 0.25 -> 0.5 : Node 2
+      // etc.
+
+      const step = 1 / nodes.length;
+      const nodesIndex = Math.floor(progress / step) + 1;
+
+      // Adjust to ensure we show 0 initially if just starting, but usually we want to see at least 1 if we are into the section?
+      // User request: "Collapsed by default and then as we scroll, they should uncollapse".
+      // Let's say initially 0. As we scroll, 1 appears, then 2...
+
+      setVisibleNodes(Math.min(nodes.length, Math.max(0, nodesIndex)));
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [nodes.length]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 ">
-      <h2 className="text-4xl font-bold text-center mb-4">
-        <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-          Journey
-        </span>
-      </h2>
-      <p className="text-center text-slate-400 mb-16">
-        My education and professional experience
-      </p>
+    <div ref={containerRef} className="relative w-full" style={{ height: `${nodes.length * 60 + 100}vh` }}>
+      {/* Container height determines scroll duration. 60vh per node. */}
 
-      <div className="relative transition-all duration-500 ease-in-out" style={{ minHeight: `${getTotalHeight()}px` }}>
-        
-        {/* Connecting line - Desktop at 50%, Mobile at 20px from left */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none transition-all duration-500" style={{ zIndex: 1 }}>
-          {/* Desktop line */}
-          <line 
-            className="hidden md:block"
-            x1="50%" 
-            y1={getNodePosition(0) + 20} 
-            x2="50%" 
-            y2={getNodePosition(nodes.length - 1) + 20} 
-            stroke="#64748b" 
-            strokeWidth="4" 
-          />
-          {/* Mobile line */}
-          <line 
-            className="md:hidden transition-all duration-500"
-            x1="20" 
-            y1={getNodePosition(0) + 20} 
-            x2="20" 
-            y2={getNodePosition(nodes.length - 1) + 20} 
-            stroke="#64748b" 
-            strokeWidth="4" 
-          />
-        </svg>
+      <div className="sticky top-20 bottom-23 h-[calc(100vh-5)] flex flex-col overflow-hidden">
 
-        {/* Timeline items */}
-        <div className="relative" style={{ zIndex: 2 }}>
-          {nodes.map((node, index) => {
-            const topPosition = getNodePosition(index);
-            const isLeft = node.type !== 'work';
+        <div className="w-full max-w-6xl mx-auto px-4">
+          <div className="flex flex-col items-center mb-16">
+            <h2 className="text-4xl font-black uppercase tracking-tight mb-4 text-center">The Journey</h2>
+            <div className="h-1 w-24 bg-[var(--text-primary)]"></div>
+          </div>
 
-            return (
-              <div key={node.id}>
-                {/* Card - Desktop (alternating sides) */}
-                <div 
-                  className="hidden md:block absolute"
-                  style={{
-                    top: `${topPosition}px`,
-                    left: isLeft ? '50%' : 'auto',
-                    right: isLeft ? 'auto' : '50%',
-                    marginLeft: isLeft ? '24px' : 'auto',
-                    marginRight: isLeft ? 'auto' : '24px',
-                    zIndex: isNodeExpanded(node.id) ? 10 : 2
-                  }}
-                >
-                  <div 
-                    className={`w-80 bg-slate-900 border rounded-lg p-4 transition-all duration-300 cursor-pointer ${borderColor(node)}`}
-                    onMouseEnter={() => setHoveredNode(node.id)}
-                    onMouseLeave={() => setHoveredNode(null)}
-                    onClick={() => handleCardClick(node.id)}
+          <div className="relative">
+            {/* Central Line - Always visible but maybe fades in? */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-800 hidden md:block transition-all duration-1000" style={{ height: `${visibleNodes * (100 / nodes.length)}%` }}></div>
+            <div className="absolute left-8 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-800 md:hidden transition-all duration-1000" style={{ height: `${visibleNodes * (100 / nodes.length)}%` }}></div>
+
+            <div className="space-y-12">
+              {nodes.map((node, index) => {
+                const isLeft = index % 2 === 0;
+                const isVisible = index < visibleNodes;
+
+                return (
+                  <div
+                    key={node.id}
+                    className={`relative flex flex-col md:flex-row ${isLeft ? 'md:flex-row-reverse' : ''} items-center md:items-start w-full transition-all duration-700 ease-out`}
+                    style={{
+                      opacity: isVisible ? 1 : 0,
+                      transform: isVisible ? 'translateY(0)' : 'translateY(50px)',
+                      filter: isVisible ? 'blur(0)' : 'blur(10px)',
+                      pointerEvents: isVisible ? 'auto' : 'none'
+                    }}
                   >
-                    <h3 className="text-white font-medium mb-1">{node.title}</h3>
-                    <p className="text-slate-400 text-sm mb-0.5">{node.organization}</p>
-                    <p className="text-slate-500 text-xs">{node.period}</p>
-                    
-                    {isNodeExpanded(node.id) && (
-                      <div className="mt-3 pt-3 border-t border-slate-800 animate-fade-in">
-                        <p className="text-slate-300 text-sm mb-2">{node.description}</p>
-                        <div className="flex flex-wrap gap-1">
-                          {node.skills.map(skill => (
-                            <span key={skill} className="text-xs px-2 py-1 rounded bg-slate-800 text-slate-400">
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
 
-                {/* Card - Mobile (all on right side) */}
-                <div 
-                  className="md:hidden absolute transition-all duration-500 ease-in-out"
-                  style={{
-                    top: `${topPosition}px`,
-                    left: '44px',
-                    right: '0',
-                    zIndex: isNodeExpanded(node.id) ? 10 : 2
-                  }}
-                >
-                  <div 
-                    className={`bg-slate-900 border rounded-lg p-4 transition-all duration-300 cursor-pointer ${borderColor(node)}`}
-                    onClick={() => handleCardClick(node.id)}
-                  >
-                    <h3 className="text-white font-medium mb-1">{node.title}</h3>
-                    <p className="text-slate-400 text-sm mb-0.5">{node.organization}</p>
-                    <p className="text-slate-500 text-xs">{node.period}</p>
-                    
-                    <div 
-                      className="overflow-hidden transition-all duration-300 ease-in-out"
-                      style={{
-                        maxHeight: isNodeExpanded(node.id) ? '500px' : '0px',
-                        opacity: isNodeExpanded(node.id) ? 1 : 0
-                      }}
-                    >
-                      <div className="mt-3 pt-3 border-t border-slate-800">
-                        <p className="text-slate-300 text-sm mb-2">{node.description}</p>
-                        <div className="flex flex-wrap gap-1">
+                    {/* Timeline Dot */}
+                    <div className="absolute left-8 md:left-1/2 md:-translate-x-1/2 w-4 h-4 bg-[var(--bg-primary)] border-2 border-[var(--text-primary)] z-10 mt-1.5 transition-all duration-500"></div>
+
+                    {/* Spacer for Desktop */}
+                    <div className="hidden md:block w-1/2"></div>
+
+                    {/* Content Card */}
+                    <div className={`w-full md:w-1/2 pl-20 md:pl-0 ${isLeft ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'}`}>
+                      <div>
+                        <span className="font-mono text-xs text-[var(--accent-cyan)] mb-2 block uppercase tracking-wider">
+                          {node.period}
+                        </span>
+                        <h3 className="text-xl font-bold uppercase mb-1">{node.title}</h3>
+                        <p className="font-mono text-sm text-gray-500 mb-4">{node.organization}</p>
+
+                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-md ml-auto mr-auto md:mx-0">
+                          {node.description}
+                        </p>
+
+                        <div className={`flex flex-wrap gap-2 mt-4 ${isLeft ? 'md:justify-end' : 'md:justify-start'}`}>
                           {node.skills.map(skill => (
-                            <span key={skill} className="text-xs px-2 py-1 rounded bg-slate-800 text-slate-400">
+                            <span key={skill} className="text-xs font-mono border border-gray-200 dark:border-gray-800 px-2 py-1 bg-[var(--bg-primary)]">
                               {skill}
                             </span>
                           ))}
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
 
-                {/* Node dot - Desktop at center, Mobile at left */}
-                <div 
-                  className="absolute"
-                  style={{
-                    top: `${topPosition + 20}px`,
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    zIndex: 3
-                  }}
-                >
-                  <div className="hidden md:block w-4 h-4 rounded-full bg-slate-600" />
-                </div>
-                <div 
-                  className="absolute md:hidden"
-                  style={{
-                    top: `${topPosition + 20}px`,
-                    left: '12px',
-                    zIndex: 3
-                  }}
-                >
-                  <div className="w-4 h-4 rounded-full bg-slate-600" />
-                </div>
-              </div>
-            );
-          })}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </div>
