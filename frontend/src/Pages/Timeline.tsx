@@ -48,8 +48,8 @@ export default function Timeline() {
       organization: 'Axia Digital',
       period: '2022 - Oct 2025',
       type: 'work',
-      description: 'Led development of microservices using React/Node.js. Managed Azure cloud infrastructure and CI/CD pipelines.',
-      skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'Azure', 'SQL', 'Docker', 'GitHub Actions']
+      description: 'Building enterprise-grade CPD platforms for professionals. Leading development of multiple projects with experience in cloud technologies.',
+      skills: ['React', 'TypeScript', 'Flutter', 'Node.js', 'AWS', 'SQL', 'IIS', 'Docker']
     }
   ];
 
