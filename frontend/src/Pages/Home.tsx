@@ -50,7 +50,7 @@ export default function Home() {
       link: 'https://github.com/sibti-ali/TaskManager',
       accent: 'border-green-500'
     }
-    
+
   ];
 
   const projectsPerPage = 3;
@@ -109,7 +109,7 @@ export default function Home() {
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className={`uppercase text-sm tracking-widest hover:line-through decoration-2 ${activeSection === section ? 'font-bold line-through decoration-[var(--accent-cyan)]' : 'text-gray-500 dark:text-gray-400'
+                  className={`uppercase text-sm tracking-widest hover:line-through decoration-2 ${activeSection === section ? 'font-bold line-through decoration-[var(--accent-cyan)]' : 'text-gray-600 dark:text-gray-400'
                     }`}
                 >
                   {section}
@@ -159,7 +159,7 @@ export default function Home() {
             <h1 className="text-6xl sm:text-8xl font-black mb-6 tracking-tighter leading-none">
               SIBTAIN <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--text-primary)] to-[var(--accent-purple)]">ALI</span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
+            <p className="text-xl text-gray-700 dark:text-gray-400 mb-8 max-w-lg leading-relaxed">
               Software Developer specializing in enterprise solutions, data-driven platforms, and digital experiences.
             </p>
 
@@ -212,7 +212,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row gap-12">
             <div className="md:w-1/3">
               <h2 className="text-4xl font-black mb-2 uppercase tracking-tight">Technical<br />Arsenal</h2>
-              <p className="text-gray-500 dark:text-gray-400 mt-4">
+              <p className="text-gray-600 dark:text-gray-400 mt-4">
                 A curated list of technologies I use to build performant and scalable applications.
               </p>
             </div>
@@ -223,7 +223,7 @@ export default function Home() {
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`uppercase font-bold tracking-wider text-sm ${activeTab === tab ? 'text-[var(--text-primary)]' : 'text-gray-400'}`}
+                    className={`uppercase font-bold tracking-wider text-sm ${activeTab === tab ? 'text-[var(--text-primary)]' : 'text-gray-600 dark:text-gray-400'}`}
                   >
                     {tab}
                   </button>
@@ -266,14 +266,14 @@ export default function Home() {
                       className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-zinc-900 text-gray-300">
+                    <div className="w-full h-full flex items-center justify-center bg-gray-50 dark:bg-zinc-900 text-gray-500 dark:text-gray-600">
                       <Terminal size={48} strokeWidth={1} />
                     </div>
                   )}
                 </div>
                 <div className="p-6 flex flex-col flex-grow">
                   <h3 className="text-xl font-bold mb-3">{project.title}</h3>
-                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
+                  <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
                     {project.description}
                   </p>
 
@@ -291,7 +291,7 @@ export default function Home() {
                       VIEW SOURCE <ExternalLink size={16} />
                     </a>
                   ) : (
-                    <span className="inline-flex items-center gap-2 text-sm text-gray-400 cursor-not-allowed">
+                    <span className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-not-allowed">
                       PRIVATE PROJECT
                     </span>
                   )}
@@ -316,7 +316,7 @@ export default function Home() {
           <a href="https://www.linkedin.com/in/sibtain-ali-73ab7a213/" target="_blank" rel="noreferrer" className="hover:text-[var(--text-primary)] transition-colors"><Linkedin size={20} /></a>
         </div>
 
-        <p className="text-xs font-mono text-gray-400">© {new Date().getFullYear()} SIBTAIN ALI</p>
+        <p className="text-xs font-mono text-gray-600 dark:text-gray-400">© {new Date().getFullYear()} SIBTAIN ALI</p>
       </footer>
     </div>
   );

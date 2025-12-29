@@ -147,9 +147,9 @@ export default function Timeline() {
                           {node.period}
                         </span>
                         <h3 className="text-xl font-bold uppercase mb-1">{node.title}</h3>
-                        <p className="font-mono text-sm text-gray-500 mb-4">{node.organization}</p>
+                        <p className="font-mono text-sm text-gray-700 dark:text-gray-400 mb-4">{node.organization}</p>
 
-                        <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed max-w-md ml-auto mr-auto md:mx-0">
+                        <p className="text-sm text-gray-700 dark:text-gray-400 leading-relaxed max-w-md ml-auto mr-auto md:mx-0">
                           {node.description}
                         </p>
 
